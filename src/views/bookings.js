@@ -30,35 +30,37 @@ class Bookings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableDate: null
+            tableData: null
         };
     }
 
-    createData() {
-        let data = '';
-        axios.get('http://hms.zuzurooms.local:9005/todo/ravindu-react')
-        .then(function (response) {
-            data = response.data;
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    
-        return data;
-    };
-
     componentDidMount () {
-        this.setState({
-            tableData: this.createData()
+        axios.get('http://hms.zuzurooms.local:9005/todo/ravindu-react')
+        .then((response) =>{
+            console.log(response.data);
+            const results = response.data;
+            this.setState({
+                tableData: results
+            });
+        })
+        .catch((error)=> {
+            console.log(error);
         });
     };
 
      
     render() {
 
-
         const { classes } = this.props;
-        
+
+        if(!this.state.tableData) {
+            return(
+            <div className={classes.homeStyle}>
+                <h2>Loading...!!</h2>
+            </div>
+            )
+        }
+        else {
         return(
             <Paper className={classes.root}>
             <div className={classes.homeStyle}>
@@ -81,10 +83,10 @@ class Bookings extends React.Component {
                     <TableCell component="th" scope="row">
                         {n.ReservationNumber}
                     </TableCell>
-                    <TableCell numeric>{n.BookingUserFirstName}</TableCell>
-                    <TableCell numeric>{n.HotelName}</TableCell>
-                    <TableCell numeric>{n.BookingCheckinType}</TableCell>
-                    <TableCell numeric>{n.CreatedDate}</TableCell>
+                    <TableCell>{n.BookingUserFirstName}</TableCell>
+                    <TableCell>{n.HotelName}</TableCell>
+                    <TableCell>{n.BookingCheckinType}</TableCell>
+                    <TableCell>{n.CreatedDate}</TableCell>
                     </TableRow>
                 );
                 })}
@@ -92,6 +94,7 @@ class Bookings extends React.Component {
             </Table>
         </Paper>
         )
+    }
     }
 }
 
