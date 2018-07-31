@@ -24,7 +24,7 @@ function TopMenu(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar position="fixed" color="default">
         <Toolbar className={classes.toolBarStyles}>
           <img src="./images/logo.png"  className={classes.imgStyles}></img>
         </Toolbar>

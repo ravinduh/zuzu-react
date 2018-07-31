@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,7 +6,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
+import BookingStatus from '../components/bookingStatus.js';
+
 
 const styles = theme => ({
   root: {
@@ -21,6 +24,9 @@ const styles = theme => ({
     homeStyle: {
         textAlign: 'left',
         padding: 10 
+    },
+    progress: {
+        margin: theme.spacing.unit * 2,
     }
 });
 
@@ -55,9 +61,13 @@ class Bookings extends React.Component {
 
         if(!this.state.tableData) {
             return(
-            <div className={classes.homeStyle}>
-                <h2>Loading...!!</h2>
-            </div>
+            <Grid container spacing={24} className={classes.homeStyle}>
+                <Grid item xs={5}></Grid>
+                <Grid item xs={2}>
+                    <CircularProgress className={classes.progress} color="secondary" />
+                </Grid>
+                <Grid item xs={5}></Grid>
+            </Grid>
             )
         }
         else {
@@ -70,6 +80,7 @@ class Bookings extends React.Component {
             <TableHead>
                 <TableRow>
                 <TableCell>Reservation number</TableCell>
+                <TableCell>Booking status</TableCell>
                 <TableCell>Booking user name</TableCell>
                 <TableCell>Hotel name</TableCell>
                 <TableCell>Booking checkin type</TableCell>
@@ -80,13 +91,14 @@ class Bookings extends React.Component {
                 {this.state.tableData.map(n => {
                 return (
                     <TableRow key={n.ID}>
-                    <TableCell component="th" scope="row">
-                        {n.ReservationNumber}
-                    </TableCell>
-                    <TableCell>{n.BookingUserFirstName}</TableCell>
-                    <TableCell>{n.HotelName}</TableCell>
-                    <TableCell>{n.BookingCheckinType}</TableCell>
-                    <TableCell>{n.CreatedDate}</TableCell>
+                        <TableCell component="th" scope="row">
+                            {n.ReservationNumber}
+                        </TableCell>
+                        <TableCell><BookingStatus statusId={n.BookingStatus} /></TableCell>
+                        <TableCell>{n.BookingUserFirstName}</TableCell>
+                        <TableCell>{n.HotelName}</TableCell>
+                        <TableCell>{n.BookingCheckinType}</TableCell>
+                        <TableCell>{n.CreatedDate}</TableCell>
                     </TableRow>
                 );
                 })}
@@ -97,10 +109,6 @@ class Bookings extends React.Component {
     }
     }
 }
-
-Bookings.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(Bookings);
 

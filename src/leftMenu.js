@@ -29,15 +29,13 @@ const styles = theme => ({
   icon: {},
   menu: {
       height: '100%'
+  },
+  containerStyle: {
+    marginTop: 80
   }
 });
 
-// const Home = () => (
-//     <div>
-//       <h2>Home</h2>
-//     </div>
-//   );
-  
+
   const About = () => (
     <div>
       <h2>About</h2>
@@ -79,7 +77,7 @@ function LeftMenu(props) {
 
   return (
     <Router>
-        <Grid container spacing={24}>
+        <Grid container spacing={24} className={classes.containerStyle}>
             <Grid item xs={12}>
                 <TopMenu />
             </Grid>
